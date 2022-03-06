@@ -12,7 +12,7 @@ function setup() {
     icRadiusRatioSlider = createSlider(0.0, 1.0, 0.6, 0.01);
     icRadiusRatioSlider.position(20, 50);
 
-    numStripesSlider = createSlider(2, 50, 8);
+    numStripesSlider = createSlider(2, 150, 8);
     numStripesSlider.position(20, 80);
 
     rotationSpeedSlider = createSlider(-6.25, 6.25, 1.0, 0.05);
