@@ -1,4 +1,4 @@
-FRAME_RATE = 50
+FRAME_RATE = 50;
 
 
 function setup() {
@@ -29,6 +29,12 @@ function setup() {
     icColorInput = createInput("#B8B8B8");
     icColorInput.position(20, 200);
     icColorInput.style("width", `${rotationSpeedSlider.width}px`);
+
+    numCirclesSlider = createSlider(1, 100, 1);
+    numCirclesSlider.position(20, 230);
+
+    interCircleSpaceSlider = createSlider(0, 200, 30);
+    interCircleSpaceSlider.position(20, 260);
 }
 
 
@@ -42,6 +48,8 @@ function draw() {
     stripeColor1 = stripeColorInput1.value();
     stripeColor2 = stripeColorInput2.value();
     icColor = icColorInput.value();
+    numCircles = numCirclesSlider.value();
+    interCircleSpace = interCircleSpaceSlider.value();
 
     // Draw divider
     push();
@@ -57,33 +65,42 @@ function draw() {
     text("Stripe color 1", rotationSpeedSlider.x * 2 + rotationSpeedSlider.width, rotationSpeedSlider.y + 7 + 30);
     text("Stripe color 2", rotationSpeedSlider.x * 2 + rotationSpeedSlider.width, rotationSpeedSlider.y + 7 + 60);
     text("Inner circle color", rotationSpeedSlider.x * 2 + rotationSpeedSlider.width, rotationSpeedSlider.y + 7 + 90);
+    text(`(${numCircles}) Number of circles`, numCirclesSlider.x * 2 + numCirclesSlider.width, numCirclesSlider.y + 7);
+    text(`(${interCircleSpace}) Space between circles`, interCircleSpaceSlider.x * 2 + interCircleSpaceSlider.width, interCircleSpaceSlider.y + 7);
 
-    x_offset = width * 0.5
-    y_offset = height * 0.5
 
-    // Draw main circle
-    push();
-    translate(x_offset, y_offset);
-    fill(stripeColor1);
-    circle(0, 0, ocRadius*2);
-    pop();
+    remainingWidth = 0.85 * width;
+    maxCols = Math.floor(remainingWidth / (ocRadius*2 + interCircleSpace));
+    maxRows = Math.floor(height / (ocRadius*2 + interCircleSpace));
 
-    // Draw stripes
-    push();
-    translate(x_offset, y_offset);
-    if (rotationSpeed != 0) {
-        rotate((frameCount / FRAME_RATE) * rotationSpeed);
+    for (let i = 0; i < Math.min(numCircles, maxCols*maxRows); i++) {
+        x_offset = 0.15*width + (i%maxCols)*(ocRadius*2 + interCircleSpace) + ocRadius; 
+        y_offset = (Math.floor(i/maxCols)*(ocRadius*2 + interCircleSpace) + ocRadius);
+
+        // Draw main circle
+        push();
+        translate(x_offset, y_offset);
+        fill(stripeColor1);
+        circle(0, 0, ocRadius*2);
+        pop();
+
+        // Draw stripes
+        push();
+        translate(x_offset, y_offset);
+        if (rotationSpeed != 0) {
+            rotate((frameCount / FRAME_RATE) * rotationSpeed);
+        }
+        fill(stripeColor2);
+        polygon(0, 0, ocRadius, numStripes);
+        pop();
+
+        // Draw inner circle
+        push();
+        translate(x_offset, y_offset);
+        fill(icColor);
+        circle(0, 0, ocRadius*icRadiusRatio*2);
+        pop();
     }
-    fill(stripeColor2);
-    polygon(0, 0, ocRadius, numStripes);
-    pop();
-
-    // Draw inner circle
-    push();
-    translate(x_offset, y_offset);
-    fill(icColor);
-    circle(0, 0, ocRadius*icRadiusRatio*2);
-    pop();
 }
 
   
