@@ -58,6 +58,7 @@ function draw() {
     pop();
 
     // Draw text
+    fill("#000000");
     text(`(${ocRadius}) Radius`, ocRadiusSlider.x * 2 + ocRadiusSlider.width, ocRadiusSlider.y + 7);
     text(`(${icRadiusRatio}) Inner/Outer ratio`, icRadiusRatioSlider.x * 2 + icRadiusRatioSlider.width, icRadiusRatioSlider.y + 7);
     text(`(${numStripes}) Number of stripes`, numStripesSlider.x * 2 + numStripesSlider.width, numStripesSlider.y + 7);
@@ -72,6 +73,13 @@ function draw() {
     remainingWidth = 0.85 * width;
     maxCols = Math.floor(remainingWidth / (ocRadius*2 + interCircleSpace));
     maxRows = Math.floor(height / (ocRadius*2 + interCircleSpace));
+
+    if (numCircles > maxCols*maxRows) {
+        fill("#FF0000");
+        text(`Max ${maxCols*maxRows} circles can be drawn due to space restriction.`,
+              15,
+              interCircleSpaceSlider.y + 37);
+    }
 
     for (let i = 0; i < Math.min(numCircles, maxCols*maxRows); i++) {
         x_offset = 0.15*width + (i%maxCols)*(ocRadius*2 + interCircleSpace) + ocRadius; 
