@@ -58,8 +58,8 @@ function draw() {
     text("Stripe color 2", rotationSpeedSlider.x * 2 + rotationSpeedSlider.width, rotationSpeedSlider.y + 7 + 60);
     text("Inner circle color", rotationSpeedSlider.x * 2 + rotationSpeedSlider.width, rotationSpeedSlider.y + 7 + 90);
 
-    x_offset = width * 0.2
-    y_offset = height * 0.1
+    x_offset = width * 0.5
+    y_offset = height * 0.5
 
     // Draw main circle
     push();
