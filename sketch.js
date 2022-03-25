@@ -38,9 +38,14 @@ function setup() {
 }
 
 
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+ }
+
+
 function draw() {
 
-    background("#FFFFFF");
+    background("#121212");
     ocRadius = ocRadiusSlider.value();
     icRadiusRatio = icRadiusRatioSlider.value();
     numStripes = numStripesSlider.value();
@@ -53,12 +58,12 @@ function draw() {
 
     // Draw divider
     push();
-    fill("#F0F0F0");
+    fill("#272727");
     rect(0, 0, width*0.14, height);
     pop();
 
     // Draw text
-    fill("#000000");
+    fill("#FFFFFF");
     text(`(${ocRadius}) Radius`, ocRadiusSlider.x * 2 + ocRadiusSlider.width, ocRadiusSlider.y + 7);
     text(`(${icRadiusRatio}) Inner/Outer ratio`, icRadiusRatioSlider.x * 2 + icRadiusRatioSlider.width, icRadiusRatioSlider.y + 7);
     text(`(${numStripes}) Number of stripes`, numStripesSlider.x * 2 + numStripesSlider.width, numStripesSlider.y + 7);
