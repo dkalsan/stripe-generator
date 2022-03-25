@@ -35,6 +35,19 @@ function setup() {
 
     interCircleSpaceSlider = createSlider(0, 200, 30);
     interCircleSpaceSlider.position(20, 260);
+
+    play = true;
+    playStopButton = createButton("Pause");
+    playStopButton.position(20, 290)
+    playStopButton.size(135, 20);
+    playStopButton.mouseClicked(() => {
+        if (play == true) {
+            playStopButton.html("Resume")
+        } else {
+            playStopButton.html("Pause")
+        }
+        play = !play;
+    });
 }
 
 
@@ -57,9 +70,10 @@ function draw() {
     interCircleSpace = interCircleSpaceSlider.value();
 
     // Draw divider
+    divider_width = textWidth(`(${interCircleSpace}) Space between circles`) + interCircleSpaceSlider.x * 2 + interCircleSpaceSlider.width + 30
     push();
     fill("#272727");
-    rect(0, 0, width*0.14, height);
+    rect(0, 0, divider_width, height);
     pop();
 
     // Draw text
@@ -74,7 +88,6 @@ function draw() {
     text(`(${numCircles}) Number of circles`, numCirclesSlider.x * 2 + numCirclesSlider.width, numCirclesSlider.y + 7);
     text(`(${interCircleSpace}) Space between circles`, interCircleSpaceSlider.x * 2 + interCircleSpaceSlider.width, interCircleSpaceSlider.y + 7);
 
-
     remainingWidth = 0.85 * width;
     maxCols = Math.floor(remainingWidth / (ocRadius*2 + interCircleSpace));
     maxRows = Math.floor(height / (ocRadius*2 + interCircleSpace));
@@ -82,8 +95,8 @@ function draw() {
     if (numCircles > maxCols*maxRows) {
         fill("#FF0000");
         text(`Max ${maxCols*maxRows} circles can be drawn due to space restriction.`,
-              15,
-              interCircleSpaceSlider.y + 37);
+            15,
+            interCircleSpaceSlider.y + 37);
     }
 
     for (let i = 0; i < Math.min(numCircles, maxCols*maxRows); i++) {
@@ -100,7 +113,7 @@ function draw() {
         // Draw stripes
         push();
         translate(x_offset, y_offset);
-        if (rotationSpeed != 0) {
+        if (rotationSpeed != 0 && play == true) {
             rotate((frameCount / FRAME_RATE) * rotationSpeed);
         }
         fill(stripeColor2);
