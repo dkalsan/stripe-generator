@@ -88,7 +88,7 @@ function draw() {
     text(`(${numCircles}) Number of circles`, numCirclesSlider.x * 2 + numCirclesSlider.width, numCirclesSlider.y + 7);
     text(`(${interCircleSpace}) Space between circles`, interCircleSpaceSlider.x * 2 + interCircleSpaceSlider.width, interCircleSpaceSlider.y + 7);
 
-    remainingWidth = 0.85 * width;
+    remainingWidth = width - divider_width;
     maxCols = Math.floor(remainingWidth / (ocRadius*2 + interCircleSpace));
     maxRows = Math.floor(height / (ocRadius*2 + interCircleSpace));
 
@@ -100,8 +100,8 @@ function draw() {
     }
 
     for (let i = 0; i < Math.min(numCircles, maxCols*maxRows); i++) {
-        x_offset = 0.15*width + (i%maxCols)*(ocRadius*2 + interCircleSpace) + ocRadius; 
-        y_offset = (Math.floor(i/maxCols)*(ocRadius*2 + interCircleSpace) + ocRadius);
+        x_offset = 10 + divider_width + (i%maxCols)*(ocRadius*2 + interCircleSpace) + ocRadius; 
+        y_offset = 10 + (Math.floor(i/maxCols)*(ocRadius*2 + interCircleSpace) + ocRadius);
 
         // Draw main circle
         push();
