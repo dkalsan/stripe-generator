@@ -1,5 +1,31 @@
 FRAME_RATE = 50;
 
+DEFAULT_TEXTAREA_TEXT =
+`0,stop,20,-1.25,#FFFFFFFF,#000000FF
+10,start,20,-1.25,#FFFFFFFF,#000000FF
+10,stop,20,-1.25,#FFFFFFFF,#000000FF
+5,start,20,1.50,#FFFFFFFF,#000000FF
+10,stop,20,1.50,#FFFFFFFF,#000000FF`;
+
+AUTOMATION_HELP_TEXT =
+`
+To use automation, enter one or more lines, each containing the following values delimited by commas:
+
+(1) WAIT_SECS: integer
+(2) COMMAND: 'start' or 'stop'
+(3) NUM_STRIPES: integer
+(4) ROTATION_SPEED: float
+(5) STRIPE_COLOR_1: string
+(6) STRIPE_COLOR_2: string
+
+For example:
+
+0,stop,20,-1.25,#FFFFFFFF,#000000FF
+10,start,20,-1.25,#FFFFFFFF,#000000FF
+10,stop,20,-1.25,#FFFFFFFF,#000000FF
+5,start,20,1.50,#FFFFFFFF,#000000FF
+10,stop,20,1.50,#FFFFFFFF,#000000FF
+`
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -197,6 +223,36 @@ function setup() {
         play = !play;
     });
     all_inputs.push(playStopButton);
+
+    /*
+    Adapted from https://github.com/JunShern/fish-stripes/
+    */
+
+    automateButton = createButton('Automate');
+    automateButton.position(20, 410);
+    automateButton.mousePressed(startAutomation);
+    automateButton.size(280, 25);
+    helpButton = createButton('?');
+    helpButton.position(20 + automateButton.width + 5, 410);
+    helpButton.size(25, 25);
+    helpButton.mousePressed(x => 
+        alert(AUTOMATION_HELP_TEXT)
+        );
+    all_inputs.push(automateButton);
+    all_inputs.push(helpButton);
+
+    textArea = createElement('textarea');
+    textArea.position(20, 440);
+    textArea.size(305, 100);
+    textArea.value(DEFAULT_TEXTAREA_TEXT);
+    all_inputs.push(textArea);
+
+    autoStatus = createDiv("Awaiting instructions.");
+    autoStatus.style('background', '#fff');
+    autoStatus.style('padding', '5px');
+    autoStatus.position(20, 550);
+    autoStatus.size(300, 120);
+    all_inputs.push(autoStatus);
 }
 
 
