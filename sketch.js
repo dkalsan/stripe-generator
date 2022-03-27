@@ -307,10 +307,21 @@ function draw() {
     maxRows = Math.floor(height / (ocRadius*2 + interCircleSpace));
 
     if (numCircles > maxCols*maxRows && !menuHidden) {
-        fill("#FF0000");
-        text(`Max ${maxCols*maxRows} circles can be drawn due to space restriction.`,
-            15,
+
+        maxColsMenuHidden = Math.floor(width / (ocRadius*2 + interCircleSpace));
+        maxRowsMenuHidden = Math.floor(height / (ocRadius*2 + interCircleSpace));
+
+        if (numCircles > maxColsMenuHidden*maxRowsMenuHidden) {
+            fill("#FF0000");
+            text(`Max ${maxColsMenuHidden*maxRowsMenuHidden} circles can be drawn due to space restriction.`,
+                15,
             playStopButton.y + 37);
+        } else {
+            fill("#FF8800");
+            text(`${maxColsMenuHidden*maxRowsMenuHidden} circles can be drawn only with menu hidden.`,
+                15,
+            playStopButton.y + 37);
+        }
     }
 
     for (let i = 0; i < Math.min(numCircles, maxCols*maxRows); i++) {
