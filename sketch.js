@@ -33,6 +33,9 @@ function setup() {
     frameRate(FRAME_RATE);
     noStroke();
 
+    customFrameCount = 0;
+    initialRotation = 0;
+
     x_offset_input = 160
     x_offset_text = 200
 
@@ -126,6 +129,9 @@ function setup() {
     rotationSpeedSlider = createSlider(rotationSpeedMin, rotationSpeedMax, rotationSpeed, 0.05);
     rotationSpeedSlider.position(20, 150);
     rotationSpeedSlider.input(() => {
+        initialRotation = rotation;
+        customFrameCount = 0;
+
         rotationSpeed = rotationSpeedSlider.value();
         rotationSpeedInput.value(rotationSpeed);
     });
@@ -133,6 +139,9 @@ function setup() {
     rotationSpeedInput.position(x_offset_input, 150);
     rotationSpeedInput.size(25, 15);
     rotationSpeedInput.changed(() => {
+        initialRotation = rotation;
+        customFrameCount = 0;
+
         rotationSpeed = rotationSpeedInput.value();
         rotationSpeed = rotationSpeed.replace(/,/g, ".")
         rotationSpeed = Math.max(Math.min(rotationSpeed, rotationSpeedMax), rotationSpeedMin);
@@ -318,9 +327,10 @@ function draw() {
         // Draw stripes
         push();
         translate(x_offset, y_offset);
-        if (rotationSpeed != 0 && play == true) {
-            rotate((frameCount / FRAME_RATE) * rotationSpeed);
-        }
+        if (play == true && rotationSpeed != 0) {
+            rotation = initialRotation + (customFrameCount / FRAME_RATE) * rotationSpeed;
+        } 
+        rotate(rotation);
         fill(stripeColor2);
         polygon(0, 0, ocRadius, numStripes);
         pop();
@@ -331,6 +341,13 @@ function draw() {
         fill(icColor);
         circle(0, 0, ocRadius*(icRadiusRatio/100)*2);
         pop();
+    }
+
+    if (play == true && rotationSpeed != 0) {
+        customFrameCount += 1;
+    } else {
+        initialRotation = rotation;
+        customFrameCount = 0;
     }
 }
 
