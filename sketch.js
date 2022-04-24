@@ -365,19 +365,23 @@ function draw() {
   
 function polygon(x, y, r, numStripes) {
 	let angle = PI/numStripes;
+    let nVertices = 10;
 
     beginShape();
     for (let i = 0; i < numStripes; i++) { 
 
         vertex(x, y);
 
-        let sx2 = x + (cos(2*i*angle)) * r;
-        let sy2 = y + (sin(2*i*angle)) * r;
-        vertex(sx2, sy2);
+        startAngle = 2 * i * angle;
+        endAngle = (2 * i + 1) * angle;
+        diffAngle = (endAngle - startAngle);
+        for (let j = 0; j <= nVertices; j++) {
+            currAngle = startAngle + (j / nVertices) * diffAngle;
+            sx = x + (cos(currAngle)) * r;
+            sy = y + (sin(currAngle)) * r;
+            vertex(sx, sy);
+        }
 
-        let sx3 = x + (cos((2*i+1)*angle)) * r;
-        let sy3 = y + (sin((2*i+1)*angle)) * r;
-        vertex(sx3, sy3);
     }
     endShape(CLOSE)
 }
