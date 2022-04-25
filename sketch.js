@@ -365,7 +365,7 @@ function draw() {
   
 function polygon(x, y, r, numStripes) {
 	let angle = PI/numStripes;
-    let nVertices = 10;
+    let nVertices = 5;
 
     beginShape();
     for (let i = 0; i < numStripes; i++) { 
@@ -375,8 +375,8 @@ function polygon(x, y, r, numStripes) {
         startAngle = 2 * i * angle;
         endAngle = (2 * i + 1) * angle;
         diffAngle = (endAngle - startAngle);
-        for (let j = 0; j <= nVertices; j++) {
-            currAngle = startAngle + (j / nVertices) * diffAngle;
+        for (let j = 0; j < nVertices; j++) {
+            currAngle = startAngle + (j / (nVertices - 1)) * diffAngle;
             sx = x + (cos(currAngle)) * r;
             sy = y + (sin(currAngle)) * r;
             vertex(sx, sy);
