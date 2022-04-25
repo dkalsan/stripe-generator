@@ -48,7 +48,7 @@ class Instruction {
 
 
 function startAutomation() {
-    fullCommandString = textArea.value();
+    fullCommandString = textArea.value().trim();
     console.log(fullCommandString);
     console.log("Parsing...");
     commandStrings = fullCommandString.split(/\r?\n/);
