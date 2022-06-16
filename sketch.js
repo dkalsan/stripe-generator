@@ -28,6 +28,28 @@ For example:
 1,50,0.00,#FFFFFFFF,#000000FF
 `
 
+
+function get_cached_value(key, defaultVal, parseFn) {
+    /*
+    Reads the value from localStorage and optionally
+    parses it to a desired type with the providing
+    parseFn. If the key doesn't exist, the provided
+    defaultValue is assigned.
+    */
+
+    if (localStorage[key] !== null) {
+        cached_val = localStorage[key];
+        if (parseFn !== undefined) {
+            return parseFn(cached_val);
+        } else {
+            return cached_val;
+        }
+    } 
+
+    return defaultVal;
+}
+
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
     frameRate(FRAME_RATE);
@@ -59,7 +81,7 @@ function setup() {
         menuHidden = !menuHidden;
     });
 
-    ocRadius = parseInt(localStorage["ocRadius"]) || 70;
+    ocRadius = get_cached_value("ocRadius", 70, parseInt); 
     ocRadiusMin = 1;
     ocRadiusMax = 500;
     ocRadiusSlider = createSlider(ocRadiusMin, ocRadiusMax, ocRadius);
@@ -80,7 +102,7 @@ function setup() {
     all_inputs.push(ocRadiusSlider);
     all_inputs.push(ocRadiusInput);
     
-    icRadiusRatio = parseInt(localStorage["icRadiusRatio"]) || 60;
+    icRadiusRatio = get_cached_value("icRadiusRatio", 60, parseInt);
     icRadiusRatioMin = 0;
     icRadiusRatioMax = 100;
     icRadiusRatioSlider = createSlider(icRadiusRatioMin, icRadiusRatioMax, icRadiusRatio);
@@ -101,7 +123,7 @@ function setup() {
     all_inputs.push(icRadiusRatioSlider);
     all_inputs.push(icRadiusRatioInput);
 
-    numStripes = parseInt(localStorage["numStripes"]) || 8;
+    numStripes = get_cached_value("numStripes", 8, parseInt);
     numStripesMin = 2;
     numStripesMax = 150;
     numStripesSlider = createSlider(numStripesMin, numStripesMax, numStripes);
@@ -122,7 +144,7 @@ function setup() {
     all_inputs.push(numStripesSlider);
     all_inputs.push(numStripesInput);
 
-    rotationSpeed = parseFloat(localStorage["rotationSpeed"]) || 1.0;
+    rotationSpeed = get_cached_value("rotationSpeed", 1.0, parseFloat);
     rotationSpeedMin = -6.25;
     rotationSpeedMax = 6.25;
     rotationSpeedSlider = createSlider(rotationSpeedMin, rotationSpeedMax, rotationSpeed, 0.05);
@@ -144,7 +166,7 @@ function setup() {
     all_inputs.push(rotationSpeedSlider);
     all_inputs.push(rotationSpeedInput);
 
-    stripeColor1 = localStorage["stripeColor1"] || "#FFFFFF";
+    stripeColor1 = get_cached_value("stripeColor1", "#FFFFFF");
     stripeColorInput1 = createInput(stripeColor1);
     stripeColorInput1.position(20, 180);
     stripeColorInput1.style("width", `${rotationSpeedSlider.width}px`);
@@ -153,7 +175,7 @@ function setup() {
     });
     all_inputs.push(stripeColorInput1);
     
-    stripeColor2 = localStorage["stripeColor2"] || "#000000";
+    stripeColor2 = get_cached_value("stripeColor2", "#000000");
     stripeColorInput2 = createInput(stripeColor2);
     stripeColorInput2.position(20, 210);
     stripeColorInput2.style("width", `${rotationSpeedSlider.width}px`);
@@ -162,7 +184,7 @@ function setup() {
     });
     all_inputs.push(stripeColorInput2);
 
-    icColor = localStorage["icColor"] || "#B8B8B8";
+    icColor = get_cached_value("icColor", "#B8B8B8");
     icColorInput = createInput(icColor);
     icColorInput.position(20, 240);
     icColorInput.style("width", `${rotationSpeedSlider.width}px`);
@@ -171,7 +193,7 @@ function setup() {
     });
     all_inputs.push(icColorInput);
 
-    numCircles = parseInt(localStorage["numCircles"]) || 1;
+    numCircles = get_cached_value("numCircles", 1, parseInt);
     numCirclesMin = 1;
     numCirclesMax = 100;
     numCirclesSlider = createSlider(numCirclesMin, numCirclesMax, numCircles);
@@ -192,7 +214,7 @@ function setup() {
     all_inputs.push(numCirclesSlider);
     all_inputs.push(numCirclesInput);
 
-    interCircleSpace = parseInt(localStorage["interCircleSpace"]) || 30;
+    interCircleSpace = get_cached_value("interCircleSpace", 30, parseInt);
     interCircleSpaceMin = 0;
     interCircleSpaceMax = 200;
     interCircleSpaceSlider = createSlider(interCircleSpaceMin, interCircleSpaceMax, interCircleSpace);
