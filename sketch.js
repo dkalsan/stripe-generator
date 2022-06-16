@@ -284,7 +284,10 @@ function setup() {
 
     automateButton = createButton('Automate');
     automateButton.position(20, 440);
-    automateButton.mousePressed(startAutomation);
+    automateButton.mousePressed(() => {
+        automateButton.attribute("disabled", "");
+        startAutomation();
+    });
     automateButton.size(280, 25);
     helpButton = createButton('?');
     helpButton.position(20 + automateButton.width + 5, 440);

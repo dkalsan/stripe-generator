@@ -92,6 +92,7 @@ function executeNextInstruction() {
     if (autoInstructions.length <= 0) {
         console.log("Done!");
         autoStatus.html("Done!");
+        automateButton.removeAttribute("disabled");
         return;
     }
 
