@@ -20,6 +20,7 @@ You can play around with the following parameters:
 
 Additional options:
 * **Hide Menu** - Hides the menu to create additional drawing space. When you set the parameters, an info board appears stating whether all the circles will fit even after the menu is hidden.
+* **Cache preset** - Caches your parameter settings in local storage, so that they persist over multiple sessions.
 * **Pause/Resume** - Pauses and resumes animation.
 * **Automation** - Enables you to preset a specific schedule of animations, which are run on Automate button press. This functionality is adapted from https://github.com/JunShern/fish-stripes/. Press the question mark button for information on how to write the scheduling commands.
 

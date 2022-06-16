@@ -59,7 +59,7 @@ function setup() {
         menuHidden = !menuHidden;
     });
 
-    ocRadius = 70;
+    ocRadius = parseInt(localStorage["ocRadius"]) || 70;
     ocRadiusMin = 1;
     ocRadiusMax = 500;
     ocRadiusSlider = createSlider(ocRadiusMin, ocRadiusMax, ocRadius);
@@ -80,7 +80,7 @@ function setup() {
     all_inputs.push(ocRadiusSlider);
     all_inputs.push(ocRadiusInput);
     
-    icRadiusRatio = 60;
+    icRadiusRatio = parseInt(localStorage["icRadiusRatio"]) || 60;
     icRadiusRatioMin = 0;
     icRadiusRatioMax = 100;
     icRadiusRatioSlider = createSlider(icRadiusRatioMin, icRadiusRatioMax, icRadiusRatio);
@@ -101,7 +101,7 @@ function setup() {
     all_inputs.push(icRadiusRatioSlider);
     all_inputs.push(icRadiusRatioInput);
 
-    numStripes = 8;
+    numStripes = parseInt(localStorage["numStripes"]) || 8;
     numStripesMin = 2;
     numStripesMax = 150;
     numStripesSlider = createSlider(numStripesMin, numStripesMax, numStripes);
@@ -122,7 +122,7 @@ function setup() {
     all_inputs.push(numStripesSlider);
     all_inputs.push(numStripesInput);
 
-    rotationSpeed = 1.0;
+    rotationSpeed = parseFloat(localStorage["rotationSpeed"]) || 1.0;
     rotationSpeedMin = -6.25;
     rotationSpeedMax = 6.25;
     rotationSpeedSlider = createSlider(rotationSpeedMin, rotationSpeedMax, rotationSpeed, 0.05);
@@ -144,7 +144,7 @@ function setup() {
     all_inputs.push(rotationSpeedSlider);
     all_inputs.push(rotationSpeedInput);
 
-    stripeColor1 = "#FFFFFF";
+    stripeColor1 = localStorage["stripeColor1"] || "#FFFFFF";
     stripeColorInput1 = createInput(stripeColor1);
     stripeColorInput1.position(20, 180);
     stripeColorInput1.style("width", `${rotationSpeedSlider.width}px`);
@@ -153,7 +153,7 @@ function setup() {
     });
     all_inputs.push(stripeColorInput1);
     
-    stripeColor2 = "#000000";
+    stripeColor2 = localStorage["stripeColor2"] || "#000000";
     stripeColorInput2 = createInput(stripeColor2);
     stripeColorInput2.position(20, 210);
     stripeColorInput2.style("width", `${rotationSpeedSlider.width}px`);
@@ -162,7 +162,7 @@ function setup() {
     });
     all_inputs.push(stripeColorInput2);
 
-    icColor = "#B8B8B8";
+    icColor = localStorage["icColor"] || "#B8B8B8";
     icColorInput = createInput(icColor);
     icColorInput.position(20, 240);
     icColorInput.style("width", `${rotationSpeedSlider.width}px`);
@@ -171,7 +171,7 @@ function setup() {
     });
     all_inputs.push(icColorInput);
 
-    numCircles = 1;
+    numCircles = parseInt(localStorage["numCircles"]) || 1;
     numCirclesMin = 1;
     numCirclesMax = 100;
     numCirclesSlider = createSlider(numCirclesMin, numCirclesMax, numCircles);
@@ -192,7 +192,7 @@ function setup() {
     all_inputs.push(numCirclesSlider);
     all_inputs.push(numCirclesInput);
 
-    interCircleSpace = 30;
+    interCircleSpace = parseInt(localStorage["interCircleSpace"]) || 30;
     interCircleSpaceMin = 0;
     interCircleSpaceMax = 200;
     interCircleSpaceSlider = createSlider(interCircleSpaceMin, interCircleSpaceMax, interCircleSpace);
@@ -213,9 +213,38 @@ function setup() {
     all_inputs.push(interCircleSpaceSlider);
     all_inputs.push(interCircleSpaceInput);
 
+    cacheButton = createButton("Cache preset");
+    cacheButton.position(20, 330);
+    cacheButton.size(135, 20);
+    cacheButton.mouseClicked(() => {
+        d = {
+            "ocRadius": ocRadius,
+            "icRadiusRatio": icRadiusRatio,
+            "numStripes": numStripes,
+            "rotationSpeed": rotationSpeed,
+            "stripeColor1": stripeColor1,
+            "stripeColor2": stripeColor2,
+            "icColor": icColor,
+            "numCircles": numCircles,
+            "interCircleSpace": interCircleSpace
+        }
+
+        Object.keys(d).forEach((key) => {
+            localStorage[key] = d[key];
+        })
+
+        cacheButton.attribute("disabled", "");
+        cacheButton.html("Saved!");
+        setTimeout(() => {
+            cacheButton.removeAttribute("disabled");
+            cacheButton.html("Cache preset");
+        }, 3000)
+    })
+    all_inputs.push(cacheButton);
+
     play = true;
     playStopButton = createButton("Pause");
-    playStopButton.position(20, 330)
+    playStopButton.position(20, 360);
     playStopButton.size(135, 20);
     playStopButton.mouseClicked(() => {
         if (play == true) {
@@ -232,11 +261,11 @@ function setup() {
     */
 
     automateButton = createButton('Automate');
-    automateButton.position(20, 410);
+    automateButton.position(20, 440);
     automateButton.mousePressed(startAutomation);
     automateButton.size(280, 25);
     helpButton = createButton('?');
-    helpButton.position(20 + automateButton.width + 5, 410);
+    helpButton.position(20 + automateButton.width + 5, 440);
     helpButton.size(25, 25);
     helpButton.mousePressed(x => 
         alert(AUTOMATION_HELP_TEXT)
@@ -245,7 +274,7 @@ function setup() {
     all_inputs.push(helpButton);
 
     textArea = createElement('textarea');
-    textArea.position(20, 440);
+    textArea.position(20, 470);
     textArea.size(305, 100);
     textArea.value(DEFAULT_TEXTAREA_TEXT);
     all_inputs.push(textArea);
@@ -253,7 +282,7 @@ function setup() {
     autoStatus = createDiv("Awaiting instructions.");
     autoStatus.style('background', '#fff');
     autoStatus.style('padding', '5px');
-    autoStatus.position(20, 550);
+    autoStatus.position(20, 580);
     autoStatus.size(300, 120);
     all_inputs.push(autoStatus);
 }
