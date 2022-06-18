@@ -37,7 +37,7 @@ function get_cached_value(key, defaultVal, parseFn) {
     defaultValue is assigned.
     */
 
-    if (localStorage[key] !== null) {
+    if (localStorage[key] !== undefined) {
         cached_val = localStorage[key];
         if (parseFn !== undefined) {
             return parseFn(cached_val);
