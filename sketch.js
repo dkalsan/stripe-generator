@@ -375,6 +375,9 @@ function draw() {
         angle += rotationSpeed * (deltaTime / 1000); 
     }
 
+    // TODO: precompute polygon vertices
+    polygonVertices = precomputePolygon(ocRadius, numStripes);
+
     for (let i = 0; i < Math.min(numCircles, maxCols*maxRows); i++) {
         x_offset = 10 + divider_width + (i%maxCols)*(ocRadius*2 + interCircleSpace) + ocRadius; 
         y_offset = 45 + (Math.floor(i/maxCols)*(ocRadius*2 + interCircleSpace) + ocRadius);
@@ -391,7 +394,7 @@ function draw() {
         translate(x_offset, y_offset);
         rotate(angle);
         fill(stripeColor2);
-        polygon(0, 0, ocRadius, numStripes);
+        polygon(polygonVertices);
         pop();
 
         // Draw inner circle
@@ -404,26 +407,35 @@ function draw() {
 
 }
 
-  
-function polygon(x, y, r, numStripes) {
-	let angle = PI/numStripes;
-    let nVertices = 5;
 
-    beginShape();
+function precomputePolygon(r, numStripes) {
+    let angle = PI/numStripes;
+    let nVertices = 2;
+    
+    let vertices = [];
+
     for (let i = 0; i < numStripes; i++) { 
 
-        vertex(x, y);
+        vertices.push([0, 0]);
 
+        // TODO: Try to rewrite using arc(...);
         startAngle = 2 * i * angle;
-        endAngle = (2 * i + 1) * angle;
-        diffAngle = (endAngle - startAngle);
         for (let j = 0; j < nVertices; j++) {
-            currAngle = startAngle + (j / (nVertices - 1)) * diffAngle;
-            sx = x + (cos(currAngle)) * r;
-            sy = y + (sin(currAngle)) * r;
-            vertex(sx, sy);
+            currAngle = startAngle + (j / (nVertices - 1)) * angle;
+            sx = cos(currAngle) * r;
+            sy = sin(currAngle) * r;
+            vertices.push([sx, sy]);
         }
+    }
 
+    return vertices;
+}
+
+  
+function polygon(vertices) {
+    beginShape();
+    for (let i = 0; i < vertices.length; i++) {
+        vertex(vertices[i][0], vertices[i][1]);
     }
     endShape(CLOSE)
 }
