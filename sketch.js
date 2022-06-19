@@ -315,7 +315,8 @@ function setup() {
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
- }
+ 
+}
 
 
 function draw() {
@@ -349,7 +350,6 @@ function draw() {
         remainingWidth = width;
     }
 
-    
     maxCols = Math.floor(remainingWidth / (ocRadius*2 + interCircleSpace));
     maxRows = Math.floor(height / (ocRadius*2 + interCircleSpace));
 
@@ -371,71 +371,59 @@ function draw() {
         }
     }
 
-    if (play == true && rotationSpeed != 0) {
+    if (play == true) {
         angle += rotationSpeed * (deltaTime / 1000); 
+    
+        polygonAngles = precomputePolygon(numStripes);
+
+        for (let i = 0; i < Math.min(numCircles, maxCols*maxRows); i++) {
+            x_offset = 10 + divider_width + (i%maxCols)*(ocRadius*2 + interCircleSpace) + ocRadius; 
+            y_offset = 45 + (Math.floor(i/maxCols)*(ocRadius*2 + interCircleSpace) + ocRadius);
+
+            // Draw main circle
+            push();
+            translate(x_offset, y_offset);
+            fill(stripeColor1);
+            circle(0, 0, ocRadius*2);
+            pop();
+
+            // Draw stripes
+            push();
+            translate(x_offset, y_offset);
+            rotate(angle);
+            fill(stripeColor2);
+            polygon(polygonAngles, ocRadius);
+            pop();
+
+            // Draw inner circle
+            push();
+            translate(x_offset, y_offset);
+            fill(icColor);
+            circle(0, 0, ocRadius*(icRadiusRatio/100)*2);
+            pop();
+        }
     }
-
-    // TODO: precompute polygon vertices
-    polygonVertices = precomputePolygon(ocRadius, numStripes);
-
-    for (let i = 0; i < Math.min(numCircles, maxCols*maxRows); i++) {
-        x_offset = 10 + divider_width + (i%maxCols)*(ocRadius*2 + interCircleSpace) + ocRadius; 
-        y_offset = 45 + (Math.floor(i/maxCols)*(ocRadius*2 + interCircleSpace) + ocRadius);
-
-        // Draw main circle
-        push();
-        translate(x_offset, y_offset);
-        fill(stripeColor1);
-        circle(0, 0, ocRadius*2);
-        pop();
-
-        // Draw stripes
-        push();
-        translate(x_offset, y_offset);
-        rotate(angle);
-        fill(stripeColor2);
-        polygon(polygonVertices);
-        pop();
-
-        // Draw inner circle
-        push();
-        translate(x_offset, y_offset);
-        fill(icColor);
-        circle(0, 0, ocRadius*(icRadiusRatio/100)*2);
-        pop();
-    }
-
 }
 
 
-function precomputePolygon(r, numStripes) {
+function precomputePolygon(numStripes) {
     let angle = PI/numStripes;
-    let nVertices = 2;
+    let angles = [];
     
-    let vertices = [];
-
     for (let i = 0; i < numStripes; i++) { 
-
-        vertices.push([0, 0]);
-
-        // TODO: Try to rewrite using arc(...);
         startAngle = 2 * i * angle;
-        for (let j = 0; j < nVertices; j++) {
-            currAngle = startAngle + (j / (nVertices - 1)) * angle;
-            sx = cos(currAngle) * r;
-            sy = sin(currAngle) * r;
-            vertices.push([sx, sy]);
-        }
+        endAngle = (2 * i + 1) * angle;
+        angles.push([startAngle, endAngle]);
     }
 
-    return vertices;
+    return angles;
 }
 
   
-function polygon(vertices) {
-    beginShape();
-    for (let i = 0; i < vertices.length; i++) {
-        vertex(vertices[i][0], vertices[i][1]);
+function polygon(polygonAngles, r) {
+    for (let i = 0; i < polygonAngles.length; i++) {
+        let startAngle = polygonAngles[i][0];
+        let endAngle = polygonAngles[i][1];
+        arc(0, 0, 2*r, 2*r, startAngle, endAngle, PIE);
     }
-    endShape(CLOSE)
 }
