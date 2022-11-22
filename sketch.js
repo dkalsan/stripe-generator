@@ -125,7 +125,7 @@ function setup() {
 
     numStripes = get_cached_value("numStripes", 8, parseInt);
     numStripesMin = 2;
-    numStripesMax = 150;
+    numStripesMax = 400;
     numStripesSlider = createSlider(numStripesMin, numStripesMax, numStripes);
     numStripesSlider.position(20, 120);
     numStripesSlider.input(() => {
