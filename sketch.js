@@ -248,7 +248,8 @@ function setup() {
             "stripeColor2": stripeColor2,
             "icColor": icColor,
             "numCircles": numCircles,
-            "interCircleSpace": interCircleSpace
+            "interCircleSpace": interCircleSpace,
+            "textArea": textArea.value()
         }
 
         Object.keys(d).forEach((key) => {
@@ -301,7 +302,7 @@ function setup() {
     textArea = createElement('textarea');
     textArea.position(20, 470);
     textArea.size(305, 100);
-    textArea.value(DEFAULT_TEXTAREA_TEXT);
+    textArea.value(get_cached_value("textArea", DEFAULT_TEXTAREA_TEXT));
     all_inputs.push(textArea);
 
     autoStatus = createDiv("Awaiting instructions.");
