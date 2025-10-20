@@ -1,7 +1,7 @@
 # Rotating radial stripes
 A small web-app, which allows the user to customize spinning circles with a stripe pattern. 
 
-Available at: https://dkalsan.github.io/rotating-radial-stripes/
+Available at: https://dkalsan.github.io/stripe-generator/
 
 # Functionality
 ![app preview](images/preview.gif)
