@@ -1,7 +1,7 @@
 # Stripe Generator
 A small web-app, which allows the user to customize spinning circles with a stripe pattern. 
 
-Available at: https://dkalsan.github.io/stripe-generator/
+Available at: https://dkalsan.github.io/stripe-generator/ (currently down, please clone and run locally)
 
 # Functionality
 ![app preview](images/preview.gif)
